@@ -23,41 +23,39 @@
             margin: 0;
             overflow: hidden;
             height: 100vh;
+            width: 100vw;
+            position: fixed;
         }
-        #root { height: 100%; }
+        #root { height: 100%; display: flex; flex-direction: column; }
         .ios-blur {
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             background-color: rgba(255, 255, 255, 0.75);
         }
-        #error-display {
+        #error-overlay {
             display: none;
             position: fixed;
-            top: 20px;
-            left: 20px;
-            right: 20px;
-            background: #FF3B30;
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            z-index: 9999;
-            font-family: monospace;
-            font-size: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            inset: 0;
+            background: white;
+            z-index: 10000;
+            padding: 40px;
+            overflow-y: auto;
         }
     </style>
 
     <script>
-        // Global error tracking to prevent silent "blank screen"
-        window.onerror = function(msg, url, lineNo, columnNo, error) {
-            var display = document.getElementById('error-display');
-            if (display) {
-                display.style.display = 'block';
-                display.innerHTML = '<strong>Xatolik yuz berdi:</strong><br>' + msg + '<br>Joy: ' + url + ':' + lineNo;
+        // Safari polyfill and error boundary
+        window.process = { env: { API_KEY: "" } };
+        window.onerror = function(msg, url, line, col, error) {
+            var overlay = document.getElementById('error-overlay');
+            if (overlay) {
+                overlay.style.display = 'block';
+                overlay.innerHTML = '<h1 style="color:red;font-weight:bold">Xatolik yuz berdi</h1>' +
+                                  '<p style="font-family:monospace;background:#eee;padding:10px">' + msg + '</p>' +
+                                  '<p>Safari/Chrome versiyangizni tekshiring yoki Netlify build loglarini ko\'ring.</p>';
             }
             return false;
         };
-        window.process = { env: { API_KEY: "" } };
     </script>
 
     <script type="importmap">
@@ -76,13 +74,16 @@
 </script>
 </head>
 <body>
-    <div id="error-display"></div>
+    <div id="error-overlay"></div>
     <div id="root">
-        <div class="flex items-center justify-center h-full flex-col gap-4">
-            <div class="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            <p class="text-gray-500 font-bold animate-pulse">Yuklanmoqda...</p>
+        <div class="flex items-center justify-center h-full flex-col gap-6">
+            <div class="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <div class="text-center">
+                <p class="text-xl font-bold text-gray-800">Sarhisob yuklanmoqda</p>
+                <p class="text-sm text-gray-400">Iltimos kuting...</p>
+            </div>
         </div>
     </div>
-    <script type="module" src="index.tsx"></script>
+    <script type="module" src="./index.tsx"></script>
 </body>
 </html>

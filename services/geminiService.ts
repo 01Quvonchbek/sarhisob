@@ -1,29 +1,30 @@
 
 import { GoogleGenAI } from "@google/genai";
-import { Transaction, UserSettings } from "../types";
+import { Transaction, UserSettings } from "../types.ts";
 
 export const getFinancialAdvice = async (transactions: Transaction[], settings: UserSettings) => {
-  // Try to find the API key in multiple common locations
+  // Try multiple ways to get the API Key (Netlify uses process.env)
   const apiKey = (window as any).process?.env?.API_KEY || "";
   
-  if (!apiKey) {
-    console.warn("API_KEY not found in environment variables.");
-    return "Netlify sozlamalarida API_KEY topilmadi. Iltimos kalitni o'rnating. 🔑";
+  if (!apiKey || apiKey === "") {
+    console.error("API_KEY is missing in the environment.");
+    return "Xatolik: API kaliti topilmadi. Netlify sozlamalarida API_KEY o'zgaruvchisini yarating. 🔑";
   }
 
   const ai = new GoogleGenAI({ apiKey });
   
   const prompt = `
-    Siz moliya maslahatchisisiz.
-    Oylik daromad: ${settings.salary} ${settings.currency}
-    Xarajatlar: ${JSON.stringify(transactions.slice(0, 15))}
+    Siz o'zbek moliya ekspertisiz.
+    Foydalanuvchi ma'lumotlari:
+    - Oylik maosh: ${settings.salary} ${settings.currency}
+    - Oxirgi tranzaktsiyalar: ${JSON.stringify(transactions.slice(0, 15))}
 
-    Tahlil qiling:
-    1. Holat (qisqa).
-    2. Kredit/Qarzlarni yopish rejasi.
-    3. 2 ta tejash yo'li.
+    Tahlil qilib bering:
+    1. Hozirgi holatga baho (juda qisqa).
+    2. Kredit yoki qarzlar bo'lsa, ularni yopish uchun birinchi qadam.
+    3. Xarajatlarni tejash uchun 2 ta hayotiy tavsiya.
     
-    Javob o'zbek tilida, do'stona va 400 belgidan oshmasin.
+    Javob faqat o'zbek tilida, do'stona va 400 belgidan oshmasin.
   `;
 
   try {
@@ -33,7 +34,7 @@ export const getFinancialAdvice = async (transactions: Transaction[], settings: 
     });
     return response.text;
   } catch (error) {
-    console.error("AI Error:", error);
-    return "AI hozirda band yoki API kalitda xatolik bor. 🌐";
+    console.error("Gemini API Error:", error);
+    return "AI hozirda xizmat ko'rsata olmaydi. Iltimos, keyinroq urinib ko'ring yoki API kalitni tekshiring. 🌐";
   }
 };

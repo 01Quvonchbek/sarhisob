@@ -24,8 +24,8 @@ import {
   ResponsiveContainer, 
   Tooltip 
 } from 'recharts';
-import { Transaction, TransactionType, Category, UserSettings } from './types';
-import { getFinancialAdvice } from './services/geminiService';
+import { Transaction, TransactionType, Category, UserSettings } from './types.ts';
+import { getFinancialAdvice } from './services/geminiService.ts';
 
 const COLORS = ['#007AFF', '#34C759', '#FF9500', '#FF3B30', '#5856D6', '#AF52DE', '#FFCC00', '#8E8E93'];
 
@@ -133,21 +133,21 @@ const App: React.FC = () => {
       const res = await getFinancialAdvice(transactions, settings);
       setAiAdvice(res || '');
     } catch {
-      setAiAdvice("Xatolik yuz berdi. Iltimos keyinroq urinib ko'ring.");
+      setAiAdvice("Xatolik yuz berdi. Netlify sozlamalarini tekshiring.");
     }
     setLoadingAI(false);
   };
 
   return (
-    <div className="h-screen bg-[#F2F2F7] flex flex-col overflow-hidden">
+    <div className="h-full bg-[#F2F2F7] flex flex-col overflow-hidden">
       <div className="h-[env(safe-area-inset-top,20px)] bg-[#F2F2F7]/95 backdrop-blur-2xl fixed top-0 left-0 right-0 z-[60]"></div>
 
-      <main className="flex-1 overflow-y-auto px-5 pb-32 pt-10">
+      <main className="flex-1 overflow-y-auto px-5 pb-32 pt-12">
         <header className="flex justify-between items-end mb-8">
           <div>
-            <h2 className="text-[10px] font-black text-[#8E8E93] uppercase tracking-[0.2em] mb-1">Sarhisob AI</h2>
+            <h2 className="text-[10px] font-black text-[#8E8E93] uppercase tracking-[0.2em] mb-1">Moliya AI</h2>
             <h1 className="text-4xl font-extrabold tracking-tighter text-[#1C1C1E]">
-              {activeTab === 'dashboard' ? 'Asosiy' : 
+              {activeTab === 'dashboard' ? 'Sarhisob' : 
                activeTab === 'history' ? 'Tarix' : 
                activeTab === 'analytics' ? 'Tahlil' : 'Admin'}
             </h1>
@@ -155,22 +155,22 @@ const App: React.FC = () => {
           {activeTab === 'dashboard' && (
             <button 
               onClick={() => setIsAdding(true)} 
-              className="bg-[#007AFF] text-white w-14 h-14 rounded-full shadow-lg shadow-[#007AFF]/30 flex items-center justify-center active:scale-95 transition-transform"
+              className="bg-[#007AFF] text-white w-14 h-14 rounded-full shadow-lg shadow-[#007AFF]/30 flex items-center justify-center active:scale-90 transition-transform"
             >
               <Plus size={32} />
             </button>
           )}
         </header>
 
-        <div className="transition-all duration-300">
+        <div className="space-y-6">
           {activeTab === 'dashboard' && (
-            <div className="space-y-6">
+            <>
               <div className="bg-white p-8 rounded-[2.8rem] shadow-sm relative overflow-hidden">
                 <div className="absolute top-0 right-0 -mt-8 -mr-8 opacity-[0.03] text-black"><Wallet size={180} /></div>
                 <div className="relative z-10">
                   <div className="flex justify-between items-start mb-10">
                     <div>
-                      <p className="text-[11px] font-black text-[#8E8E93] uppercase tracking-widest mb-1">Bugun mumkin</p>
+                      <p className="text-[11px] font-black text-[#8E8E93] uppercase tracking-widest mb-1">Kunlik limit</p>
                       <div className="flex items-baseline gap-2">
                         <span className="text-5xl font-[900] text-[#1C1C1E] tracking-tighter">{Math.round(summary.dailyLimit).toLocaleString()}</span>
                         <span className="text-xl font-bold text-[#8E8E93]">{settings.currency}</span>
@@ -184,7 +184,7 @@ const App: React.FC = () => {
                       <p className={`text-lg font-black ${summary.balance >= 0 ? 'text-[#34C759]' : 'text-[#FF3B30]'}`}>{summary.balance.toLocaleString()}</p>
                     </div>
                     <div className="bg-[#F2F2F7] rounded-[1.8rem] p-5">
-                      <p className="text-[9px] text-[#8E8E93] font-black uppercase tracking-wider mb-1">Jami Sarf</p>
+                      <p className="text-[9px] text-[#8E8E93] font-black uppercase tracking-wider mb-1">Jami xarajat</p>
                       <p className="text-lg font-black text-[#FF3B30]">{summary.totalSpent.toLocaleString()}</p>
                     </div>
                   </div>
@@ -199,27 +199,14 @@ const App: React.FC = () => {
                       <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white"><Bell size={20} /></div>
                       <div className="flex-1 text-white">
                         <h4 className="font-black text-sm">{r.category}</h4>
-                        <p className="text-[11px] opacity-80 font-bold">Muddat: {r.dueDate}</p>
+                        <p className="text-[11px] opacity-80 font-bold">To'lash: {r.dueDate}</p>
                       </div>
                       <div className="text-white font-black text-sm">{r.amount.toLocaleString()}</div>
                     </div>
                   ))}
                 </div>
               )}
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white p-6 rounded-[2.2rem] shadow-sm">
-                   <div className="w-10 h-10 bg-[#5856D6]/10 text-[#5856D6] rounded-2xl flex items-center justify-center mb-3"><TrendingDown size={20}/></div>
-                   <p className="text-[9px] font-black text-[#8E8E93] uppercase mb-1">Qarz/Kredit</p>
-                   <p className="text-lg font-black text-[#1C1C1E]">{summary.fixedCosts.toLocaleString()}</p>
-                </div>
-                <div className="bg-white p-6 rounded-[2.2rem] shadow-sm">
-                   <div className="w-10 h-10 bg-[#FF9500]/10 text-[#FF9500] rounded-2xl flex items-center justify-center mb-3"><Calendar size={20}/></div>
-                   <p className="text-[9px] font-black text-[#8E8E93] uppercase mb-1">Kun qoldi</p>
-                   <p className="text-lg font-black text-[#1C1C1E]">{summary.remainingDays} kun</p>
-                </div>
-              </div>
-            </div>
+            </>
           )}
 
           {activeTab === 'history' && (
@@ -229,7 +216,7 @@ const App: React.FC = () => {
                   <TransactionRow key={tx.id} tx={tx} isLast={idx === transactions.length - 1} onDelete={() => setTransactions(transactions.filter(t => t.id !== tx.id))} />
                 ))
               ) : (
-                <div className="py-20 text-center text-[#8E8E93] font-bold">Tarix bo'sh</div>
+                <div className="py-20 text-center text-[#8E8E93] font-bold">Hech narsa topilmadi</div>
               )}
             </div>
           )}
@@ -238,7 +225,7 @@ const App: React.FC = () => {
             <div className="space-y-6">
               <div className="bg-white p-8 rounded-[2.8rem] shadow-sm">
                 <h3 className="font-black text-sm uppercase tracking-widest text-[#8E8E93] mb-6 flex items-center gap-2">
-                  <PieChartIcon size={18}/> Xarajatlar tahlili
+                  <PieChartIcon size={18}/> Grafika
                 </h3>
                 <div className="h-64">
                   <ResponsiveContainer width="100%" height="100%">
@@ -253,9 +240,9 @@ const App: React.FC = () => {
               </div>
               <div className="bg-[#1C1C1E] p-10 rounded-[3rem] text-white shadow-2xl relative overflow-hidden">
                 <Sparkles className="absolute -bottom-10 -right-10 text-white/5" size={200} />
-                <h3 className="text-2xl font-black mb-6">AI Mentor</h3>
+                <h3 className="text-2xl font-black mb-6">AI Maslahatchi</h3>
                 <button onClick={getAdvice} disabled={loadingAI} className="w-full bg-white text-black py-5 rounded-[1.8rem] font-bold active:scale-95 transition-transform disabled:opacity-50">
-                  {loadingAI ? 'Tahlil...' : 'Maslahat olish'}
+                  {loadingAI ? 'O\'ylamoqda...' : 'Tahlilni boshlash'}
                 </button>
                 {aiAdvice && <div className="mt-8 p-6 bg-white/10 rounded-2xl text-[14px] leading-relaxed font-medium">{aiAdvice}</div>}
               </div>
@@ -265,15 +252,15 @@ const App: React.FC = () => {
           {activeTab === 'settings' && (
             <div className="bg-white p-8 rounded-[2.8rem] shadow-sm space-y-8">
               <div className="space-y-3">
-                <label className="text-[11px] font-black text-[#8E8E93] uppercase tracking-widest px-1">Oylik Daromad</label>
+                <label className="text-[11px] font-black text-[#8E8E93] uppercase tracking-widest px-1">Oylik maosh</label>
                 <div className="relative">
-                  <input type="number" value={settings.salary || ''} onChange={(e) => setSettings({...settings, salary: Number(e.target.value)})} placeholder="0" className="w-full bg-[#F2F2F7] border-none rounded-[1.8rem] p-6 font-black text-3xl text-[#1C1C1E]" />
+                  <input type="number" value={settings.salary || ''} onChange={(e) => setSettings({...settings, salary: Number(e.target.value)})} placeholder="Summani kiriting" className="w-full bg-[#F2F2F7] border-none rounded-[1.8rem] p-6 font-black text-3xl text-[#1C1C1E]" />
                   <span className="absolute right-8 top-1/2 -translate-y-1/2 font-bold text-[#8E8E93] text-xl">{settings.currency}</span>
                 </div>
               </div>
-              <div className="bg-[#F2F2F7] p-6 rounded-[1.8rem] text-center">
-                 <p className="text-[10px] font-black text-[#8E8E93] uppercase mb-1">Status</p>
-                 <p className="text-sm font-black text-[#1C1C1E]">Netlify Optimized v2.0</p>
+              <div className="bg-[#F2F2F7] p-6 rounded-[1.8rem] text-center border border-gray-200">
+                 <p className="text-[10px] font-black text-[#8E8E93] uppercase mb-1">Eslatma</p>
+                 <p className="text-sm font-bold text-[#1C1C1E]">Netlify muhitida API_KEY sozlanganligiga ishonch hosil qiling.</p>
               </div>
             </div>
           )}
@@ -281,7 +268,7 @@ const App: React.FC = () => {
       </main>
 
       <nav className="fixed bottom-0 left-0 right-0 ios-blur safe-bottom border-t border-[#D1D1D6]/20 px-8 pt-3 flex justify-between items-center z-50 h-[92px]">
-        <TabButton active={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} icon={<LayoutGrid size={26} />} label="Sarhisob" />
+        <TabButton active={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} icon={<LayoutGrid size={26} />} label="Asosiy" />
         <TabButton active={activeTab === 'history'} onClick={() => setActiveTab('history')} icon={<History size={26} />} label="Tarix" />
         <TabButton active={activeTab === 'analytics'} onClick={() => setActiveTab('analytics')} icon={<BarChart3 size={26} />} label="Tahlil" />
         <TabButton active={activeTab === 'settings'} onClick={() => setActiveTab('settings')} icon={<SettingsIcon size={26} />} label="Admin" />
@@ -302,17 +289,19 @@ const TabButton = ({ active, onClick, icon, label }: any) => (
 const TransactionRow = ({ tx, isLast, onDelete }: any) => (
   <div className={`flex items-center justify-between p-5 ${!isLast ? 'border-b border-[#F2F2F7]' : ''}`}>
     <div className="flex items-center gap-4">
-      <div className={`p-4 rounded-[1.2rem] bg-gray-100`}>{tx.type === TransactionType.INCOME ? <TrendingUp size={18} className="text-green-500" /> : <TrendingDown size={18} className="text-red-500" />}</div>
+      <div className="p-4 rounded-[1.2rem] bg-gray-50">
+        {tx.type === TransactionType.INCOME ? <TrendingUp size={18} className="text-green-500" /> : <TrendingDown size={18} className="text-red-500" />}
+      </div>
       <div>
         <p className="font-extrabold text-[15px] text-[#1C1C1E]">{tx.category}</p>
-        <p className="text-[10px] font-black text-[#8E8E93] uppercase">{tx.date}</p>
+        <p className="text-[10px] font-black text-[#8E8E93] uppercase opacity-60">{tx.date}</p>
       </div>
     </div>
     <div className="flex items-center gap-4">
       <div className="text-right">
         <p className={`font-black text-[16px] ${tx.type === TransactionType.INCOME ? 'text-green-500' : 'text-black'}`}>{tx.type === TransactionType.INCOME ? '+' : '-'}{tx.amount.toLocaleString()}</p>
       </div>
-      <button onClick={onDelete} className="text-[#D1D1D6] p-2 hover:text-red-500 transition-colors"><Trash2 size={18} /></button>
+      <button onClick={onDelete} className="text-[#D1D1D6] p-2 hover:text-red-500 active:scale-90 transition-transform"><Trash2 size={18} /></button>
     </div>
   </div>
 );
@@ -322,13 +311,13 @@ const AddTransactionModal = ({ onSave, onClose, settings }: any) => {
   return (
     <div className="fixed inset-0 z-[100] flex items-end justify-center">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose}></div>
-      <div className="bg-white w-full max-w-lg rounded-t-[3rem] p-10 pb-14 shadow-2xl relative z-10 safe-bottom">
+      <div className="bg-white w-full max-w-lg rounded-t-[3rem] p-10 pb-14 shadow-2xl relative z-10 safe-bottom animate-in slide-in-from-bottom-full duration-300">
         <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-8"></div>
         <div className="space-y-8 mb-12">
            <div className="flex gap-2 p-1.5 bg-[#F2F2F7] rounded-[1.8rem]">
              {[TransactionType.EXPENSE, TransactionType.INCOME, TransactionType.CREDIT, TransactionType.DEBT].map(t => (
                <button key={t} onClick={() => setTx({...tx, type: t})} className={`flex-1 py-3 rounded-[1.4rem] text-[10px] font-black uppercase transition-all ${tx.type === t ? 'bg-white text-[#007AFF] shadow-md' : 'text-[#8E8E93]'}`}>
-                 {t}
+                 {t === TransactionType.EXPENSE ? 'Chiqim' : t === TransactionType.INCOME ? 'Kirim' : t === TransactionType.CREDIT ? 'Kredit' : 'Qarz'}
                </button>
              ))}
            </div>
@@ -343,8 +332,8 @@ const AddTransactionModal = ({ onSave, onClose, settings }: any) => {
            </div>
            {(tx.type === TransactionType.CREDIT || tx.type === TransactionType.DEBT) && (
               <div className="bg-red-50 p-6 rounded-[2rem]">
-                <label className="text-[11px] font-black text-red-500 uppercase mb-3 block">To'lov muddati</label>
-                <input type="date" value={tx.dueDate} onChange={e => setTx({...tx, dueDate: e.target.value})} className="w-full bg-white border-none rounded-[1.2rem] p-5 text-red-500" />
+                <label className="text-[11px] font-black text-red-500 uppercase mb-3 block">To'lov oxirgi muddati</label>
+                <input type="date" value={tx.dueDate} onChange={e => setTx({...tx, dueDate: e.target.value})} className="w-full bg-white border-none rounded-[1.2rem] p-5 text-red-500 font-bold" />
               </div>
            )}
         </div>
