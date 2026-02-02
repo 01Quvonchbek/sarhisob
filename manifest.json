@@ -1,0 +1,20 @@
+
+{
+  "short_name": "Sarhisob",
+  "name": "Sarhisob - Aqlli Moliya",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2845/2845811.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#F2F2F7",
+  "background_color": "#F2F2F7",
+  "orientation": "portrait",
+  "scope": "/",
+  "description": "Shaxsiy moliya, xarajatlar va kreditlarni AI yordamida boshqarish dasturi."
+}

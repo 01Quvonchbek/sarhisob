@@ -1,0 +1,7 @@
+{
+  "name": "Sarhisob",
+  "short_name": "Sarhisob",
+  "description": "Professional personal finance assistant with AI-driven analytics, optimized for web and Vercel.",
+  "version": "1.4.0",
+  "requestFramePermissions": []
+}
