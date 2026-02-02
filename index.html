@@ -8,93 +8,81 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Sarhisob">
-    <meta name="format-detection" content="telephone=no">
     
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2845/2845811.png">
     <link rel="manifest" href="manifest.json">
     
-    <title>Sarhisob</title>
+    <title>Sarhisob - Aqlli Moliya</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --ios-blue: #007AFF;
-            --ios-bg: #F2F2F7;
-        }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-            background-color: var(--ios-bg);
+            background-color: #F2F2F7;
             margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
             overflow: hidden;
             height: 100vh;
-            width: 100vw;
-            position: fixed;
         }
-
-        #root {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
+        #root { height: 100%; }
         .ios-blur {
-            backdrop-filter: blur(25px) saturate(200%);
-            -webkit-backdrop-filter: blur(25px) saturate(200%);
-            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background-color: rgba(255, 255, 255, 0.75);
         }
-
-        .safe-top {
-            padding-top: env(safe-area-inset-top);
-        }
-
-        .safe-bottom {
-            padding-bottom: env(safe-area-inset-bottom);
-        }
-
-        .ios-scroll {
-            -webkit-overflow-scrolling: touch;
-            overflow-y: auto;
-            flex: 1;
-        }
-
-        .ios-active:active {
-            opacity: 0.6;
-            transform: scale(0.96);
-            transition: transform 0.1s ease;
-        }
-        
-        ::-webkit-scrollbar {
+        #error-display {
             display: none;
-        }
-
-        input, select, textarea {
-            font-size: 16px !important;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            background: #FF3B30;
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            z-index: 9999;
+            font-family: monospace;
+            font-size: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
     </style>
+
     <script>
-        // Polyfill for process.env to avoid ReferenceError in browser
-        window.process = window.process || { env: {} };
+        // Global error tracking to prevent silent "blank screen"
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            var display = document.getElementById('error-display');
+            if (display) {
+                display.style.display = 'block';
+                display.innerHTML = '<strong>Xatolik yuz berdi:</strong><br>' + msg + '<br>Joy: ' + url + ':' + lineNo;
+            }
+            return false;
+        };
+        window.process = { env: { API_KEY: "" } };
     </script>
+
     <script type="importmap">
-    {
-      "imports": {
-        "recharts": "https://esm.sh/recharts@^3.7.0",
-        "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-        "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
-        "@google/genai": "https://esm.sh/@google/genai@^1.39.0",
-        "react/": "https://esm.sh/react@^19.2.4/",
-        "react": "https://esm.sh/react@^19.2.4"
-      }
-    }
-    </script>
+{
+  "imports": {
+    "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+    "lucide-react": "https://esm.sh/lucide-react@0.460.0?bundle",
+    "recharts": "https://esm.sh/recharts@2.13.3?bundle",
+    "@google/genai": "https://esm.sh/@google/genai@0.21.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/"
+  }
+}
+</script>
 </head>
 <body>
-    <div id="root"></div>
-    <!-- Main entry point -->
+    <div id="error-display"></div>
+    <div id="root">
+        <div class="flex items-center justify-center h-full flex-col gap-4">
+            <div class="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <p class="text-gray-500 font-bold animate-pulse">Yuklanmoqda...</p>
+        </div>
+    </div>
     <script type="module" src="index.tsx"></script>
 </body>
 </html>

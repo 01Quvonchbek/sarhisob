@@ -1,30 +1,29 @@
 
 import { GoogleGenAI } from "@google/genai";
-import { Transaction, UserSettings } from "../types.ts";
+import { Transaction, UserSettings } from "../types";
 
 export const getFinancialAdvice = async (transactions: Transaction[], settings: UserSettings) => {
-  // Safe access to process.env.API_KEY
+  // Try to find the API key in multiple common locations
   const apiKey = (window as any).process?.env?.API_KEY || "";
   
   if (!apiKey) {
-    console.error("API_KEY is missing. Please set it in Netlify environment variables.");
-    return "API kaliti sozlanmagan. Iltimos, Netlify-da API_KEY-ni o'rnating. 🔑";
+    console.warn("API_KEY not found in environment variables.");
+    return "Netlify sozlamalarida API_KEY topilmadi. Iltimos kalitni o'rnating. 🔑";
   }
 
   const ai = new GoogleGenAI({ apiKey });
   
   const prompt = `
-    Siz "Sarhisob" ilovasining professional moliya maslahatchisisiz.
-    Foydalanuvchi ma'lumotlari:
-    - Oylik daromad: ${settings.salary} ${settings.currency}
-    - Tranzaktsiyalar: ${JSON.stringify(transactions.slice(0, 20))}
+    Siz moliya maslahatchisisiz.
+    Oylik daromad: ${settings.salary} ${settings.currency}
+    Xarajatlar: ${JSON.stringify(transactions.slice(0, 15))}
 
-    Vazifangiz:
-    1. Moliyaviy holatni qisqa tahlil qiling.
-    2. Kredit va qarzlarni yopish bo'yicha maslahat bering.
-    3. Xarajatlarni tejash uchun 2 ta aniq yo'l ko'rsating.
+    Tahlil qiling:
+    1. Holat (qisqa).
+    2. Kredit/Qarzlarni yopish rejasi.
+    3. 2 ta tejash yo'li.
     
-    Javob o'zbek tilida, motivator ohangda va emoji-lar bilan bo'lsin. 500 belgidan oshmasin.
+    Javob o'zbek tilida, do'stona va 400 belgidan oshmasin.
   `;
 
   try {
@@ -35,6 +34,6 @@ export const getFinancialAdvice = async (transactions: Transaction[], settings: 
     return response.text;
   } catch (error) {
     console.error("AI Error:", error);
-    return "AI bilan bog'lanishda xatolik yuz berdi. Netlify sozlamalarini tekshiring. 🌐";
+    return "AI hozirda band yoki API kalitda xatolik bor. 🌐";
   }
 };
