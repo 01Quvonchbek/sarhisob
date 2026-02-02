@@ -1,9 +1,17 @@
 
 import { GoogleGenAI } from "@google/genai";
-import { Transaction, UserSettings } from "../types";
+import { Transaction, UserSettings } from "../types.ts";
 
 export const getFinancialAdvice = async (transactions: Transaction[], settings: UserSettings) => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
+  // Safe access to process.env.API_KEY
+  const apiKey = (window as any).process?.env?.API_KEY || "";
+  
+  if (!apiKey) {
+    console.error("API_KEY is missing. Please set it in Netlify environment variables.");
+    return "API kaliti sozlanmagan. Iltimos, Netlify-da API_KEY-ni o'rnating. 🔑";
+  }
+
+  const ai = new GoogleGenAI({ apiKey });
   
   const prompt = `
     Siz "Sarhisob" ilovasining professional moliya maslahatchisisiz.
@@ -27,6 +35,6 @@ export const getFinancialAdvice = async (transactions: Transaction[], settings: 
     return response.text;
   } catch (error) {
     console.error("AI Error:", error);
-    return "Xatolik yuz berdi. Iltimos keyinroq urinib ko'ring. 🌐";
+    return "AI bilan bog'lanishda xatolik yuz berdi. Netlify sozlamalarini tekshiring. 🌐";
   }
 };

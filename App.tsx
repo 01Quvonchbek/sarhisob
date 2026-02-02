@@ -27,8 +27,8 @@ import {
   ResponsiveContainer, 
   Tooltip 
 } from 'recharts';
-import { Transaction, TransactionType, Category, UserSettings } from './types';
-import { getFinancialAdvice } from './services/geminiService';
+import { Transaction, TransactionType, Category, UserSettings } from './types.ts';
+import { getFinancialAdvice } from './services/geminiService.ts';
 
 const COLORS = ['#007AFF', '#34C759', '#FF9500', '#FF3B30', '#5856D6', '#AF52DE', '#FFCC00', '#8E8E93'];
 

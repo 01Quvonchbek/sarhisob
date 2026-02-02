@@ -5,16 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
-    <!-- Apple Web App Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Sarhisob">
     <meta name="format-detection" content="telephone=no">
     
-    <!-- App Icon for Home Screen -->
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2845/2845811.png">
-    
-    <!-- Splash Screen (Simplified) -->
     <link rel="manifest" href="manifest.json">
     
     <title>Sarhisob</title>
@@ -33,15 +29,12 @@
             margin: 0;
             padding: 0;
             -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
-            user-select: none;
             overflow: hidden;
             height: 100vh;
             width: 100vw;
             position: fixed;
         }
 
-        /* Essential for PWA Fullscreen */
         #root {
             height: 100%;
             display: flex;
@@ -78,25 +71,30 @@
             display: none;
         }
 
-        /* Prevent zooming on inputs */
         input, select, textarea {
             font-size: 16px !important;
         }
     </style>
-<script type="importmap">
-{
-  "imports": {
-    "recharts": "https://esm.sh/recharts@^3.7.0",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
-    "@google/genai": "https://esm.sh/@google/genai@^1.39.0",
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "react": "https://esm.sh/react@^19.2.4"
-  }
-}
-</script>
+    <script>
+        // Polyfill for process.env to avoid ReferenceError in browser
+        window.process = window.process || { env: {} };
+    </script>
+    <script type="importmap">
+    {
+      "imports": {
+        "recharts": "https://esm.sh/recharts@^3.7.0",
+        "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+        "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+        "@google/genai": "https://esm.sh/@google/genai@^1.39.0",
+        "react/": "https://esm.sh/react@^19.2.4/",
+        "react": "https://esm.sh/react@^19.2.4"
+      }
+    }
+    </script>
 </head>
 <body>
     <div id="root"></div>
+    <!-- Main entry point -->
+    <script type="module" src="index.tsx"></script>
 </body>
 </html>
