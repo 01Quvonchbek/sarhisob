@@ -135,15 +135,14 @@ const App: React.FC = () => {
 
   return (
     <div className="h-screen bg-[#F2F2F7] flex flex-col overflow-hidden">
-      {/* Top Safe Area for Mobile Browsers */}
       <div className="h-[env(safe-area-inset-top,20px)] bg-[#F2F2F7]/95 backdrop-blur-2xl fixed top-0 left-0 right-0 z-[60]"></div>
 
       <main className="flex-1 ios-scroll safe-top px-5 pb-32">
         <header className="flex justify-between items-end mt-10 mb-8">
           <div>
-            <h2 className="text-[10px] font-black text-[#8E8E93] uppercase tracking-[0.2em] mb-1">Sarhisob Tizimi</h2>
+            <h2 className="text-[10px] font-black text-[#8E8E93] uppercase tracking-[0.2em] mb-1">Moliya Monitoringi</h2>
             <h1 className="text-4xl font-extrabold tracking-tighter text-[#1C1C1E]">
-              {activeTab === 'dashboard' ? 'Asosiy' : 
+              {activeTab === 'dashboard' ? 'Sarhisob' : 
                activeTab === 'history' ? 'Tarix' : 
                activeTab === 'analytics' ? 'Tahlil' : 'Admin'}
             </h1>
@@ -176,7 +175,7 @@ const App: React.FC = () => {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-[#F2F2F7] rounded-[1.8rem] p-5">
-                      <p className="text-[9px] text-[#8E8E93] font-black uppercase tracking-wider mb-1">Oylik Balans</p>
+                      <p className="text-[9px] text-[#8E8E93] font-black uppercase tracking-wider mb-1">Balans</p>
                       <p className={`text-lg font-black ${summary.balance >= 0 ? 'text-[#34C759]' : 'text-[#FF3B30]'}`}>{summary.balance.toLocaleString()}</p>
                     </div>
                     <div className="bg-[#F2F2F7] rounded-[1.8rem] p-5">
@@ -206,7 +205,7 @@ const App: React.FC = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-white p-6 rounded-[2.2rem] shadow-sm">
                    <div className="w-10 h-10 bg-[#5856D6]/10 text-[#5856D6] rounded-2xl flex items-center justify-center mb-3"><TrendingDown size={20}/></div>
-                   <p className="text-[9px] font-black text-[#8E8E93] uppercase mb-1">Kredit/Qarz</p>
+                   <p className="text-[9px] font-black text-[#8E8E93] uppercase mb-1">Qarzlar</p>
                    <p className="text-lg font-black text-[#1C1C1E]">{summary.fixedCosts.toLocaleString()}</p>
                 </div>
                 <div className="bg-white p-6 rounded-[2.2rem] shadow-sm">
@@ -226,7 +225,7 @@ const App: React.FC = () => {
                     <TransactionRow key={tx.id} tx={tx} isLast={idx === transactions.length - 1} onDelete={() => setTransactions(transactions.filter(t => t.id !== tx.id))} />
                   ))
                 ) : (
-                  <div className="py-20 text-center text-[#8E8E93] font-bold">Tarix bo'sh</div>
+                  <div className="py-20 text-center text-[#8E8E93] font-bold">Hech qanday ma'lumot yo'q</div>
                 )}
               </div>
             </div>
@@ -271,20 +270,19 @@ const App: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-[#5856D6] to-[#007AFF] p-10 rounded-[3rem] text-white shadow-2xl relative overflow-hidden group">
+              <div className="bg-gradient-to-br from-[#1C1C1E] to-[#48484A] p-10 rounded-[3rem] text-white shadow-2xl relative overflow-hidden group">
                  <Sparkles className="absolute -bottom-10 -right-10 text-white/10 group-hover:scale-110 transition-transform" size={240} />
-                 <h3 className="text-3xl font-black mb-4 tracking-tighter">AI Maslahatchi</h3>
-                 <p className="text-white/80 text-[15px] font-bold mb-10 leading-tight">Gemini AI sizning xarajatlaringizni o'rganib maslahat beradi.</p>
-                 <button onClick={getAdvice} disabled={loadingAI} className="bg-white text-[#5856D6] w-full py-5 rounded-[1.8rem] font-black shadow-xl ios-active disabled:opacity-50">
-                   {loadingAI ? 'Tahlil qilinmoqda...' : 'Maslahat olish'}
+                 <h3 className="text-3xl font-black mb-4 tracking-tighter">AI Mentor</h3>
+                 <button onClick={getAdvice} disabled={loadingAI} className="bg-white text-[#1C1C1E] w-full py-5 rounded-[1.8rem] font-black shadow-xl ios-active disabled:opacity-50">
+                   {loadingAI ? 'O\'ylamoqda...' : 'Maslahat olish'}
                  </button>
               </div>
 
               {aiAdvice && (
-                <div className="bg-white p-8 rounded-[2.8rem] shadow-sm border border-[#F2F2F7] text-[#1C1C1E] text-[15px] leading-relaxed font-semibold whitespace-pre-wrap animate-in fade-in slide-in-from-bottom-5">
-                  <div className="flex items-center gap-2 mb-4 text-[#5856D6]">
+                <div className="bg-white p-8 rounded-[2.8rem] shadow-sm border border-[#F2F2F7] text-[#1C1C1E] text-[15px] leading-relaxed font-semibold animate-in fade-in slide-in-from-bottom-5">
+                  <div className="flex items-center gap-2 mb-4 text-[#007AFF]">
                     <CheckCircle2 size={18} />
-                    <span className="text-[10px] font-black uppercase tracking-widest">AI Xulosa</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest">Mentor Xulosasi</span>
                   </div>
                   {aiAdvice}
                 </div>
@@ -295,18 +293,18 @@ const App: React.FC = () => {
           {activeTab === 'settings' && (
             <div className="bg-white p-8 rounded-[2.8rem] shadow-sm space-y-8">
               <div className="space-y-3">
-                <label className="block text-[11px] font-black text-[#8E8E93] uppercase tracking-widest px-1">Oylik Daromad</label>
+                <label className="block text-[11px] font-black text-[#8E8E93] uppercase tracking-widest px-1">Daromadni Yangilash</label>
                 <div className="relative">
                   <input type="number" value={settings.salary || ''} onChange={(e) => setSettings({...settings, salary: Number(e.target.value)})} placeholder="0" className="w-full bg-[#F2F2F7] border-none rounded-[1.8rem] p-6 font-black text-3xl text-[#1C1C1E]" />
                   <span className="absolute right-8 top-1/2 -translate-y-1/2 font-bold text-[#8E8E93] text-xl">{settings.currency}</span>
                 </div>
               </div>
               <div className="pt-6 border-t border-[#F2F2F7]">
-                <button onClick={() => {if(confirm('Bazani tozalashni xohlaysizmi?')) {setTransactions([]); setSettings({salary: 0, currency: "so'm"});}}} className="w-full py-5 text-[#FF3B30] font-black text-sm bg-[#FF3B30]/5 rounded-[1.5rem] ios-active">Bazani tozalash</button>
+                <button onClick={() => {if(confirm('Barcha ma\'lumotlar butunlay o\'chib ketadi. Rozimisiz?')) {setTransactions([]); setSettings({salary: 0, currency: "so'm"});}}} className="w-full py-5 text-[#FF3B30] font-black text-sm bg-[#FF3B30]/5 rounded-[1.5rem] ios-active">Bazani tozalash</button>
               </div>
               <div className="bg-[#F2F2F7] p-6 rounded-[1.8rem] text-center">
-                 <p className="text-[10px] font-black text-[#8E8E93] uppercase mb-1">Status</p>
-                 <p className="text-sm font-black text-[#1C1C1E]">Vercel Optimized v1.4.0</p>
+                 <p className="text-[10px] font-black text-[#8E8E93] uppercase mb-1">Server</p>
+                 <p className="text-sm font-black text-[#1C1C1E]">Netlify Cloud v1.5.0</p>
               </div>
             </div>
           )}
@@ -314,7 +312,7 @@ const App: React.FC = () => {
       </main>
 
       <nav className="fixed bottom-0 left-0 right-0 ios-blur safe-bottom border-t border-[#D1D1D6]/20 px-8 pt-3 flex justify-between items-center z-50 h-[92px]">
-        <TabButton active={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} icon={<LayoutGrid size={26} />} label="Asosiy" />
+        <TabButton active={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} icon={<LayoutGrid size={26} />} label="Sarhisob" />
         <TabButton active={activeTab === 'history'} onClick={() => setActiveTab('history')} icon={<History size={26} />} label="Tarix" />
         <TabButton active={activeTab === 'analytics'} onClick={() => setActiveTab('analytics')} icon={<BarChart3 size={26} />} label="Tahlil" />
         <TabButton active={activeTab === 'settings'} onClick={() => setActiveTab('settings')} icon={<SettingsIcon size={26} />} label="Admin" />
@@ -399,7 +397,7 @@ const AddTransactionModal = ({ onSave, onClose, settings }: any) => {
            </div>
            {(tx.type === TransactionType.CREDIT || tx.type === TransactionType.DEBT) && (
               <div className="bg-[#FFF2F2] p-6 rounded-[2rem] border border-[#FF3B30]/5">
-                <label className="text-[11px] font-black text-[#FF3B30] uppercase mb-3 block">To'lov muddati</label>
+                <label className="text-[11px] font-black text-[#FF3B30] uppercase mb-3 block">Muddat</label>
                 <input type="date" value={tx.dueDate} onChange={e => setTx({...tx, dueDate: e.target.value})} className="w-full bg-white border-none rounded-[1.2rem] p-5 text-sm font-black text-[#FF3B30]" />
               </div>
            )}
